@@ -9,6 +9,7 @@ export default function createHandlers() {
       return new Promise(selectExecutor.bind(this));
     },
 
+    files: [],
     tooLarge: false,
     totallyTooLarge: false,
     tooMany: false
@@ -20,10 +21,11 @@ export default function createHandlers() {
 function selectExecutor(resolve, reject) {
   this.uploader.addEventListener('change', e => {
     const el = e.currentTarget;
-    const files = el.files;
+    const files = Array.from(el.files);
 
     try {
       merge(this.handlers, {
+        files,
         tooLarge: !validIndividualSizes(files, this.maxFileSize),
         totallyTooLarge: !validTotalSize(files, this.maxTotalSize),
         tooMany: !validFileCount(files, this.maxFileCount)

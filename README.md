@@ -137,9 +137,9 @@ The first two examples above (when rendered) will result in...
 ```
 ...leaving your component clean and uncluttered. 
 
-And being "renderless", it doesn't insert (neither wrap your components around with) any additional element you probably don't care about in the first place.
+And being "renderless", it doesn't insert (neither wrap your components around with) any additional element, except for the required `input` element which is hidden from the view anyway.
 
-To make it even "cleaner", consider specifying an [`uploaderContainerId`](#uploaderContainerId) for these hidden input elements to nest under. 
+To make it even "cleaner", consider specifying an [`uploaderContainerId`](#uploaderContainerId) for these hidden input elements to nest under the container. 
 
 
 ## Plugin Options
@@ -205,7 +205,7 @@ Enables reactivity for the core attributes, with slight performance penalties.
 
 ## Scoped Slots
 
-### `default(props: Object)`
+### `default(props: object)`
 Mimicking the [`v-slot`](https://vuejs.org/v2/api/#v-slot) built-in directive, this renderless component simply provides yours with the underlying file-upload functionalities, and whatnots. 
 
 It's worth nothing (again) that as a wrapping, template-like component, it will NOT get rendered at runtime — meaning, your target components themselves would be the real focus here. For more context, take a look at the [examples](#examples).
@@ -214,6 +214,11 @@ It's worth nothing (again) that as a wrapping, template-like component, it will 
 - type: `Function`
 - arguments: `files`, `element`
 - returns: `Promise<{ files: Array<File>, el: HTMLInputElement }>`
+
+#### `props.files`
+- type: `Array<File>`
+
+The selected files. See: [instance properties](https://developer.mozilla.org/en-US/docs/Web/API/File#Instance_properties).
 
 #### `props.tooLarge`
 - type: `boolean`

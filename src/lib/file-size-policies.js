@@ -7,9 +7,7 @@ export function validIndividualSizes(files, max) {
     return true;
   }
 
-  return Array
-    .from(files)
-    .every(file => validRange(file.size, max));
+  return files.every(file => validRange(file.size, max));
 }
 
 export function validTotalSize(files, max) {
@@ -17,9 +15,7 @@ export function validTotalSize(files, max) {
     return true;
   }
 
-  const totalSize = Array
-    .from(files)
-    .reduce((total, size) => total + size, 0);
+  const totalSize = files.reduce((total, size) => total + size, 0);
 
   return validRange(totalSize, max);
 }

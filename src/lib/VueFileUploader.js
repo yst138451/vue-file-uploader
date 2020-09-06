@@ -1,7 +1,7 @@
 import createHandlers from './create-handlers';
 import { isEmptyObject } from '../utils/helpers';
 import { captureModes } from '../config/input-file-attributes';
-import createMixinWatchers, { attributeUpdater, coreAttributesIterator } from '../mixins/watchers';
+import createMixinWatchers from '../mixins/watchers';
 import * as logger from '../utils/logger';
 
 export const coreProps = {
