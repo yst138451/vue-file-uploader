@@ -5,8 +5,13 @@
 
 ## Installation
 
+#### NPM
 ```bash
 npm install --save @yst/vue-file-uploader
+```
+#### Yarn
+```bash
+yarn add @yst/vue-file-uploader
 ```
 
 ## Component Registration
@@ -108,16 +113,14 @@ export default {
     max-file-count="2"
     :max-total-size="(1024 * 1024)">
 
-    <!-- Just like the regular <template>, you need exactly one root element, so... -->
+    <!-- Just like the regular <template>, you need exactly one root element -->
     <div class="uploader-container">
       <input @click="select"  type="button" value="Select a file" />
       
-      <div class="uploader-error-bag">
-        <ul>
-          <li v-if="tooMany">Please select no more than 2 files.</li>
-          <li v-if="totallyTooLarge">The total size is too large.</li>
-        </ul>
-      </div>
+      <ul class="uploader-error-bag">
+        <li v-if="tooMany">Please select no more than 2 files.</li>
+        <li v-if="totallyTooLarge">The total size is too large.</li>
+      </ul>
     </div>
 
   </vue-file-uploader>
@@ -179,7 +182,7 @@ Specifies which camera to use for capture of image or video data. Accepted value
 - type: `number` | `string`
 - default: `0`
 
-Maximum size of individual file in bytes.
+Maximum size of individual files in bytes.
 
 #### `maxTotalSize`
 - type: `number` | `string`
