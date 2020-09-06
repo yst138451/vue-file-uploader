@@ -7,7 +7,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'vue-file-uploader.min.js'
+    filename: 'vue-file-uploader.min.js',
+    libraryTarget: 'umd'
   },
   module: {
     rules: [

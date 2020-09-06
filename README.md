@@ -84,9 +84,48 @@ export default {
 </script>
 ```
 
+### File-size Policy Validations
+
+```html
+<template>
+  <vue-file-uploader  v-slot="{ select, tooLarge }" :max-file-size="(1024 * 1024)">
+
+    <!-- Using custom button component -->
+    <my-button 
+      @click="openFileDialog(select)"
+      :error="tooLarge"
+      label="Select a file">
+    </my-button>
+
+  </vue-file-uploader>
+</template>
+```
+
+```html
+<template>
+  <vue-file-uploader 
+    v-slot="{ select, totallyTooLarge, tooMany }" 
+    max-file-count="2"
+    :max-total-size="(1024 * 1024)">
+
+    <!-- Just like the regular <template>, you need exactly one root element, so... -->
+    <div class="uploader-container">
+      <input @click="select"  type="button" value="Select a file" />
+      
+      <div class="uploader-error-bag">
+        <ul>
+          <li v-if="tooMany">Please select no more than 2 files.</li>
+          <li v-if="totallyTooLarge">The total size is too large.</li>
+        </ul>
+      </div>
+    </div>
+
+  </vue-file-uploader>
+</template>
+```
 ---
 
-The above examples (when rendered) will result in...
+The first two examples above (when rendered) will result in...
 
 ```html
 <button>Select a file</button>
@@ -136,6 +175,24 @@ Allows users to select one or more files. See [`multiple`](https://developer.moz
 
 Specifies which camera to use for capture of image or video data. Accepted values are `user` and `environment`. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#capture).
 
+#### `maxFileSize`
+- type: `number` | `string`
+- default: `0`
+
+Maximum size of individual file in bytes.
+
+#### `maxTotalSize`
+- type: `number` | `string`
+- default: `0`
+
+Maximum size of all files combined in bytes.
+
+#### `maxFileCount`
+- type: `number` | `string`
+- default: `0`
+
+Maximum number of files to contain.
+
 #### `reactive`
 - type: `boolean`
 - default: `false`
@@ -145,15 +202,31 @@ Enables reactivity for the core attributes, with slight performance penalties.
 
 ## Scoped Slots
 
-### `default(handlers)`
+### `default(props: Object)`
 Mimicking the [`v-slot`](https://vuejs.org/v2/api/#v-slot) built-in directive, this renderless component simply provides yours with the underlying file-upload functionalities, and whatnots. 
 
 It's worth nothing (again) that as a wrapping, template-like component, it will NOT get rendered at runtime — meaning, your target components themselves would be the real focus here. For more context, take a look at the [examples](#examples).
 
-#### `handlers.select`
+#### `props.select`
 - type: `Function`
 - arguments: `files`, `element`
 - returns: `Promise<{ files: Array<File>, el: HTMLInputElement }>`
+
+#### `props.tooLarge`
+- type: `boolean`
+
+Determines if the individual files (in bytes) exceed the `maxFileSize`.
+
+#### `props.totallyTooLarge`
+- type: `boolean`
+
+Determines if all files combined (in bytes) exceed the `maxTotalSize`.
+
+#### `props.tooMany`
+- type: `boolean`
+
+Determines if the total number of files exceeds the `maxFileCount`.
+
 
 
 ## Events
