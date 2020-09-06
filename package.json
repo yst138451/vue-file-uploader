@@ -1,0 +1,36 @@
+{
+  "name": "@yst/vue-file-uploader",
+  "description": "A template-like wrapper component that adds file-upload functionalities to your components.",
+  "version": "1.0.0",
+  "author": "yst <yomuro311@gmail.com>",
+  "keywords": [
+    "vue",
+    "upload",
+    "file-upload",
+    "component"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yst138451/vue-file-uploader.git"
+  },
+  "homepage": "https://github.com/yst138451/vue-file-uploader#readme",
+  "bugs": {
+    "url": "https://github.com/yst138451/vue-file-uploader/issues"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "babel-loader": "^8.1.0",
+    "cross-env": "^7.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
