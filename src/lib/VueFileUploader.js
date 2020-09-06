@@ -1,6 +1,7 @@
-import createHandlers from '../utils/create-handlers';
+import createHandlers from './create-handlers';
 import { isEmptyObject } from '../utils/helpers';
-import createMixinWatchers from '../mixins/watchers';
+import { captureModes } from '../config/input-file-attributes';
+import createMixinWatchers, { attributeUpdater, coreAttributesIterator } from '../mixins/watchers';
 import * as logger from '../utils/logger';
 
 export const coreProps = {
@@ -16,7 +17,6 @@ export const coreProps = {
   capture: {
     type: String,
     validator(val) {
-      // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-capture
       return captureModes.includes(val);
     }
   }
@@ -31,13 +31,28 @@ export default opts => ({
   props: {
     ...coreProps,
 
+    maxFileSize: {
+      type: [Number, String],
+      default: 0
+    },
+
+    maxTotalSize: {
+      type: [Number, String],
+      default: 0
+    },
+
+    maxFileCount: {
+      type: [Number, String],
+      default: 0
+    },
+
     reactive: {
       type: Boolean
     }
   },
 
   data: vm => ({
-    uploader: vm.createUploader(),
+    uploader: {},
     handlers: createHandlers.call(vm)
   }),
 
@@ -63,6 +78,10 @@ export default opts => ({
   },
 
   mounted() {
+    this.uploader = this.createUploader();
+
+    this.updateCoreAttributes();
+
     this.injectUploader();
   },
 

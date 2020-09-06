@@ -140,7 +140,7 @@ Specifies which camera to use for capture of image or video data. Accepted value
 - type: `boolean`
 - default: `false`
 
-Enables properties reactivity with slight performance penalties.
+Enables reactivity for the core attributes, with slight performance penalties.
 
 
 ## Scoped Slots
@@ -167,7 +167,7 @@ Emitted when a file has been selected.
 ### `error(ex)`
 - `ex: Error`
 
-Emitted if file uploading exception occurs
+Emitted if any exception occurs during the whole process.
 
 
 ## License

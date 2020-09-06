@@ -7,11 +7,11 @@ const coreAttributesIterator = iteratee => {
   }
 }
 
-const watchHandlers = {
+const attributeUpdater = {
   accept(val) {
     this.uploader.accept = val && Array.isArray(val)
-      ? this.accept.join(',')
-      : this.accept;
+      ? val.join(',')
+      : val;
   },
 
   multiple(val) {
@@ -29,10 +29,10 @@ export default function () {
   const unwatch = {};
 
   return {
-    created() {
+    mounted() {
       if (this.reactive) {
         coreAttributesIterator(name => {
-          unwatch[name] = this.$watch(name, watchHandlers[name]);
+          unwatch[name] = this.$watch(name, attributeUpdater[name]);
         });
       }
     },
@@ -40,6 +40,14 @@ export default function () {
     destroyed() {
       if (this.reactive) {
         coreAttributesIterator(name => unwatch[name].call(this));
+      }
+    },
+
+    methods: {
+      updateCoreAttributes() {
+        coreAttributesIterator(name =>
+          attributeUpdater[name].call(this, this.$props[name])
+        );
       }
     }
   }

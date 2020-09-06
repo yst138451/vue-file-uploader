@@ -62,8 +62,7 @@ demo.html
 # File history 
 /.history
 demo/
+test/
 
 # IDE
 .vscode
-
-test/
