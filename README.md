@@ -142,6 +142,10 @@ And being "renderless", it doesn't insert (neither wrap your components around w
 To make it even "cleaner", consider specifying an [`uploaderContainerId`](#uploaderContainerId) for these hidden input elements to nest under the container. 
 
 
+## Demo
+
+via [CodeSandbox](https://codesandbox.io/s/vue-file-uploader-examples-u7tmg?file=/src/App.vue)
+
 ## Plugin Options
 
 #### `uploaderContainerId`
@@ -218,7 +222,7 @@ It's worth nothing (again) that as a wrapping, template-like component, it will 
 #### `props.files`
 - type: `Array<File>`
 
-The selected files. See: [instance properties](https://developer.mozilla.org/en-US/docs/Web/API/File#Instance_properties).
+The selected files. See: [Instance properties](https://developer.mozilla.org/en-US/docs/Web/API/File#Instance_properties).
 
 #### `props.tooLarge`
 - type: `boolean`
