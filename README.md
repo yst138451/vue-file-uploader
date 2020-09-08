@@ -71,7 +71,6 @@ export default {
 ```html
 <template>
   <vue-file-uploader v-slot="{ select }">
-    <!-- It doesn't need to be a button. Could be anything else -->
     <button @click="openFileDialog(select)">Select a file</button>
   </vue-file-uploader>
 </template>
@@ -93,12 +92,12 @@ export default {
 
 ```html
 <template>
-  <vue-file-uploader  v-slot="{ select, tooLarge }" :max-file-size="(1024 * 1024)">
+  <vue-file-uploader v-slot="{ select, tooLarge }" :max-file-size="(1024 * 1024)">
 
     <!-- Using custom button component -->
     <my-button 
       @click="openFileDialog(select)"
-      :error="tooLarge"
+      :style="{ borderColor: tooLarge ? 'red' : 'inherit' }"
       label="Select a file">
     </my-button>
 
@@ -109,13 +108,14 @@ export default {
 ```html
 <template>
   <vue-file-uploader 
-    v-slot="{ select, totallyTooLarge, tooMany }" 
-    max-file-count="2"
-    :max-total-size="(1024 * 1024)">
+    v-slot="{ select, tooMany, totallyTooLarge }" 
+    :max-file-count="2"
+    :max-total-size="(1024 * 1024)"
+    multiple>
 
     <!-- Just like the regular <template>, you need exactly one root element -->
     <div class="uploader-container">
-      <input @click="select"  type="button" value="Select a file" />
+      <input @click="select" type="button" value="Select a file" />
       
       <ul class="uploader-error-bag">
         <li v-if="tooMany">Please select no more than 2 files.</li>
