@@ -89,7 +89,7 @@ export default {
 </script>
 ```
 
-### File-size Policy Validations
+### File-size Policy/Rules Validations
 
 ```html
 <template>
@@ -200,6 +200,12 @@ Maximum size of all files combined in bytes.
 
 Maximum number of files to contain.
 
+#### `errorIfInvalid`
+- type: `boolean`
+- default: `false`
+
+Throws an error if any validation rule is violated.
+
 #### `reactive`
 - type: `boolean`
 - default: `false`
@@ -249,10 +255,29 @@ Determines if the total number of files exceeds the `maxFileCount`.
 
 Emitted when a file has been selected.
 
+### `invalid(violationTypes)`
+- `violationTypes: Object<string, boolean>`
+
+Emitted if any validation rule is violated, while passing the rules map that triggers the event.
+
+Example with destructured values: 
+```html
+<... @invalid="onInvalid">
+```
+
+```js
+onInvalid({ tooLarge, tooMany }) {
+  if (tooMany) {
+    // Do something
+  }
+}
+
+```
+
 ### `error(ex)`
 - `ex: Error`
 
-Emitted if any exception occurs during the whole process.
+Emitted if any exception occurs during the whole process, including rules violations or invalid files (needs `errorIfInvalid` prop enabled) and other generic exceptions.
 
 
 ## License
