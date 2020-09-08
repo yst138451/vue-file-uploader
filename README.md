@@ -166,7 +166,7 @@ The component name to use on the `<template>` when registered globally.
 
 #### `accept`
 - type: `string` | `Array<string>`
-- default: `''`
+- default: `''` (any type of file)
 
 A string (or an array of strings) that defines the file types the file input should [accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept).
 
@@ -180,7 +180,7 @@ Allows users to select one or more files. See [`multiple`](https://developer.moz
 - type: `string`
 - default: `undefined`
 
-Specifies which camera to use for capture of image or video data. Accepted values are `user` and `environment`. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#capture).
+Specifies which camera to use for capturing image or video data. Accepted values are `user` and `environment`. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#capture).
 
 #### `maxFileSize`
 - type: `number` | `string`

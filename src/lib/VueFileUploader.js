@@ -46,6 +46,10 @@ export default opts => ({
       default: 0
     },
 
+    errorIfInvalid: {
+      type: Boolean
+    },
+
     reactive: {
       type: Boolean
     }

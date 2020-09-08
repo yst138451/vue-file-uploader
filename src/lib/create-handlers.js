@@ -1,5 +1,5 @@
 import { validIndividualSizes, validTotalSize, validFileCount } from './file-size-policies';
-import { merge } from '../utils/helpers';
+import { merge, isEmptyObject } from '../utils/helpers';
 
 export default function createHandlers() {
   const handlers = {
@@ -24,15 +24,45 @@ function selectExecutor(resolve, reject) {
     const files = Array.from(el.files);
 
     try {
-      merge(this.handlers, {
-        files,
+      const invalids = {
         tooLarge: !validIndividualSizes(files, this.maxFileSize),
         totallyTooLarge: !validTotalSize(files, this.maxTotalSize),
         tooMany: !validFileCount(files, this.maxFileCount)
+      };
+
+      merge(this.handlers, {
+        files,
+        ...invalids
       });
 
-      this.$emit('selected', files, el);
-      resolve({ files, el });
+      const filteredInvalids = Object
+        .entries(invalids)
+        .reduce((seed, [name, invalid]) => {
+          if (invalid) {
+            seed[name] = invalid;
+          }
+          return seed;
+        }, {});
+
+      const anyPolicyViolations = !isEmptyObject(filteredInvalids);
+
+      if (anyPolicyViolations) {
+        this.$emit('invalid', filteredInvalids);
+
+        if (this.errorIfInvalid) {
+          throw new Error(
+            'The following file-size policies didn\'t make it: ' +
+            Object.keys(filteredInvalids)
+          );
+        }
+        else {
+          resolve({ files: [], el });
+        }
+      }
+      else {
+        this.$emit('selected', files, el);
+        resolve({ files, el });
+      }
     }
     catch (ex) {
       this.$emit('error', ex);
