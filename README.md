@@ -2,16 +2,19 @@
   <h1 align="center">Vue File Uploader</h1>
   A template-like wrapper component that adds file-upload functionalities to your components.
 </div>
+<br/>
+
+Being "renderless", it doesn't insert (neither wrap your components around with) any additional element, except for the required `input` one which is hidden from the view anyway.
 
 ## Installation
 
 #### NPM
 ```bash
-npm install --save @yst/vue-file-uploader
+$ npm install --save @yst/vue-file-uploader
 ```
 #### Yarn
 ```bash
-yarn add @yst/vue-file-uploader
+$ yarn add @yst/vue-file-uploader
 ```
 
 ## Component Registration
@@ -48,7 +51,7 @@ export default {
 
 ### Default Event Handler
 
-```html
+```vue
 <template>
   <vue-file-uploader v-slot="{ select }" @selected="onFileSelected">
     <button @click="select">Select a file</button>
@@ -68,7 +71,7 @@ export default {
 
 ### Asynchronous
 
-```html
+```vue
 <template>
   <vue-file-uploader v-slot="{ select }">
     <button @click="openFileDialog(select)">Select a file</button>
@@ -90,9 +93,12 @@ export default {
 
 ### File-size Policy/Rules Validations
 
-```html
+```vue
 <template>
-  <vue-file-uploader v-slot="{ select, tooLarge }" :max-file-size="(1024 * 1024)">
+  <vue-file-uploader 
+    v-slot="{ select, tooLarge }" 
+    :max-file-size="(1024 * 1024)"
+    :accept="['image/*', '.pdf']">
 
     <!-- Using custom button component -->
     <my-button 
@@ -105,12 +111,12 @@ export default {
 </template>
 ```
 
-```html
+```vue
 <template>
   <vue-file-uploader 
     v-slot="{ select, tooMany, totallyTooLarge }" 
-    :max-file-count="2"
-    :max-total-size="(1024 * 1024)"
+    :max-file-count="maxFileCount"
+    :max-total-size="maxTotalSize"
     multiple>
 
     <!-- Just like the regular <template>, you need exactly one root element -->
@@ -118,13 +124,22 @@ export default {
       <input @click="select" type="button" value="Select a file" />
       
       <ul class="uploader-error-bag">
-        <li v-if="tooMany">Please select no more than 2 files.</li>
+        <li v-if="tooMany">Please select no more than {{maxFileCount}} files.</li>
         <li v-if="totallyTooLarge">The total size is too large.</li>
       </ul>
     </div>
 
   </vue-file-uploader>
 </template>
+
+<script>
+  export default {
+    data: () => ({
+      maxFileCount: 2,
+      maxTotalSize: (1024 * 1024) * 2 // 2mb
+    })
+  }
+</script>
 ```
 ---
 
@@ -137,9 +152,7 @@ The first two examples above (when rendered) will result in...
 ```
 ...leaving your component clean and uncluttered. 
 
-And being "renderless", it doesn't insert (neither wrap your components around with) any additional element, except for the required `input` element which is hidden from the view anyway.
-
-To make it even "cleaner", consider specifying an [`uploaderContainerId`](#uploaderContainerId) for these hidden input elements to nest under the container. 
+To make it even "cleaner", consider specifying an [`uploaderContainerId`](#uploaderContainerId) for these hidden input elements to nest under its element as a container. 
 
 
 ## Demo
@@ -154,7 +167,7 @@ via [CodeSandbox](https://codesandbox.io/s/vue-file-uploader-examples-u7tmg?file
 
 Any valid HTML `id` selector. 
 
-By default, each (hidden) `input[type="file"]` will be positioned [`afterend`](https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentElement#Parameters) of the target element/component itself -- by specifying a container `id`, you could mount them somewhere else. Do make sure that the container exists in the DOM tree to mount to.
+By default, each (hidden) `input[type="file"]` will be positioned [`afterend`](https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentElement#Parameters) of the target element/component itself — by specifying a container `id`, you could mount them somewhere else. Please make sure that the container exists in the DOM tree to mount to.
 
 #### `componentName`
 - type: `string`
@@ -218,7 +231,7 @@ Enables reactivity for the core attributes, with slight performance penalties.
 ### `default(props: object)`
 Mimicking the [`v-slot`](https://vuejs.org/v2/api/#v-slot) built-in directive, this renderless component simply provides yours with the underlying file-upload functionalities, and whatnots. 
 
-It's worth nothing (again) that as a wrapping, template-like component, it will NOT get rendered at runtime — meaning, your target components themselves would be the real focus here. For more context, take a look at the [examples](#examples).
+It's worth nothing (again) that as a wrapping, template-like component, it is essentially non-existent — meaning, your target components themselves would be the real focus here. Go to [examples](#examples).
 
 #### `props.select`
 - type: `Function`
@@ -233,18 +246,17 @@ The selected files. See: [Instance properties](https://developer.mozilla.org/en-
 #### `props.tooLarge`
 - type: `boolean`
 
-Determines if the individual files (in bytes) exceed the `maxFileSize`.
+Determines if the individual files exceed the `maxFileSize` (in bytes).
 
 #### `props.totallyTooLarge`
 - type: `boolean`
 
-Determines if all files combined (in bytes) exceed the `maxTotalSize`.
+Determines if all files combined exceed the `maxTotalSize` (in bytes).
 
 #### `props.tooMany`
 - type: `boolean`
 
 Determines if the total number of files exceeds the `maxFileCount`.
-
 
 
 ## Events
@@ -262,7 +274,8 @@ Emitted if any validation rule is violated, while passing the rules map that tri
 
 Example with destructured values: 
 ```html
-<... @invalid="onInvalid">
+<vue-file-uploader @invalid="onInvalid">
+...
 ```
 
 ```js
